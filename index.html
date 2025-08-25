@@ -25,9 +25,13 @@ body {
   width: 100%;
   transition: all 0.3s ease;
   color: #1b2a38;
+  text-align: center;
+}
+.container img {
+  max-width: 170px;
+  margin-bottom: 20px;
 }
 h2 {
-  text-align: center;
   color: #1b2a38;
   margin-bottom: 30px;
   font-weight: 700;
@@ -68,7 +72,7 @@ button:hover {
   margin-top: 25px;
   padding: 18px;
   border-radius: 15px;
-  background: #1b2a38; /* resultado oscuro */
+  background: #1b2a38;
   text-align: center;
   font-weight: 500;
   color: #f0f0f0;
@@ -87,7 +91,7 @@ button:hover {
   text-align: center;
   padding: 14px 0;
   cursor: pointer;
-  background: #f0f0f0; /* pestañas claras */
+  background: #f0f0f0;
   color: #1b2a38;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -125,6 +129,7 @@ footer {
 <body>
 
 <div class="container">
+  <img src="https://archive.org/download/imagen_mejorada_3D/LOGO%20METEOPMO.png">
   <h2>Calculadora Psicrométrica</h2>
 
   <div class="tabs">
@@ -132,7 +137,6 @@ footer {
     <div class="tab" onclick="openTab('tab2')">Tº y Td → Tw/HR</div>
   </div>
 
-  <!-- Pestaña 1 -->
   <div id="tab1" class="tab-content active">
     <label>Temperatura seca (T °C)</label>
     <input type="number" id="T1" step="0.1" value="15.2">
@@ -148,7 +152,6 @@ footer {
     <div class="result" id="resultado1"></div>
   </div>
 
-  <!-- Pestaña 2 -->
   <div id="tab2" class="tab-content">
     <label>Temperatura seca (T °C)</label>
     <input type="number" id="T2" step="0.1" value="15.2">
@@ -164,28 +167,21 @@ footer {
     <div class="result" id="resultado2"></div>
   </div>
 
-  <!-- Footer -->
   <footer>
     Creado por Cabo 2º (MET.) Francisco Salas Muñoz
   </footer>
-
 </div>
 
 <script>
-// Cambiar pestañas
 function openTab(tabId) {
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelector(`[onclick="openTab('${tabId}')"]`).classList.add('active');
   document.getElementById(tabId).classList.add('active');
 }
-
-// Presión de vapor saturante Magnus
 function e_s(T) {
   return 6.1094 * Math.exp((17.625 * T) / (T + 243.04));
 }
-
-// --- Pestaña 1 ---
 function calcularHR() {
   const T = parseFloat(document.getElementById('T1').value);
   const Tw = parseFloat(document.getElementById('Tw1').value);
@@ -206,8 +202,6 @@ function calcularHR() {
     <strong>Punto de Rocío:</strong> ${Td.toFixed(1)} °C
   `;
 }
-
-// --- Pestaña 2 ---
 function calcularTwHR() {
   const T = parseFloat(document.getElementById('T2').value);
   const Td = parseFloat(document.getElementById('Td2').value);
@@ -229,7 +223,6 @@ function calcularTwHR() {
     Tw = Tw - diff;
     iter++;
   }
-
   const HR_final = ((e_s(Tw) - A*P*(T - Tw)) / es) * 100;
   const HR_entero = Math.round(HR_final);
 
