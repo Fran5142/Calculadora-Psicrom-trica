@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Psicrométrica Moderna Clara</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(160deg, #d0e6f6, #b0cfe0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  color: #333;
+}
+.container {
+  background: #f5f8fa;
+  padding: 35px 40px;
+  border-radius: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  max-width: 500px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+h2 {
+  text-align: center;
+  color: #1b3a57;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+input[type="number"] {
+  width: 100%;
+  padding: 14px 18px;
+  margin: 10px 0 20px 0;
+  border-radius: 12px;
+  border: 1px solid #bbb;
+  font-size: 16px;
+  background: #e6eef6;
+  color: #1b3a57;
+  transition: all 0.3s ease;
+}
+input[type="number"]:focus {
+  outline: none;
+  box-shadow: 0 0 12px #4ab3f4;
+  background: #d9e6f4;
+}
+button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #4ab3f4, #1b75d1);
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(74,179,244,0.4);
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(74,179,244,0.6);
+}
+.result {
+  margin-top: 25px;
+  padding: 18px;
+  border-radius: 15px;
+  background: #e1edf9;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: inset 0 0 10px rgba(74,179,244,0.2);
+}
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 14px 0;
+  cursor: pointer;
+  background: #d7e6f4;
+  color: #1b3a57;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.tab.active {
+  background: linear-gradient(90deg, #4ab3f4, #1b75d1);
+  color: #fff;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.1);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(15px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+label {
+  font-weight: 600;
+  color: #1b3a57;
+}
+footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #4ab3f4;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Calculadora Psicrométrica</h2>
+
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('tab1')">Tº y Tw → HR/Td</div>
+    <div class="tab" onclick="openTab('tab2')">Tº y Td → Tw/HR</div>
+  </div>
+
+  <!-- Pestaña 1 -->
+  <div id="tab1" class="tab-content active">
+    <label>Temperatura seca (T °C)</label>
+    <input type="number" id="T1" step="0.1" value="15.2">
+    
+    <label>Temperatura húmeda (Tw °C)</label>
+    <input type="number" id="Tw1" step="0.1" value="11.0">
+    
+    <label>Presión atmosférica (P hPa)</label>
+    <input type="number" id="P1" step="1" value="1013">
+    
+    <button onclick="calcularHR()">Calcular HR y Punto de Rocío</button>
+    
+    <div class="result" id="resultado1"></div>
+  </div>
+
+  <!-- Pestaña 2 -->
+  <div id="tab2" class="tab-content">
+    <label>Temperatura seca (T °C)</label>
+    <input type="number" id="T2" step="0.1" value="15.2">
+    
+    <label>Punto de rocío (Td °C)</label>
+    <input type="number" id="Td2" step="0.1" value="7.4">
+    
+    <label>Presión atmosférica (P hPa)</label>
+    <input type="number" id="P2" step="1" value="1013">
+    
+    <button onclick="calcularTwHR()">Calcular Temperatura Húmeda y Humedad Relativa</button>
+    
+    <div class="result" id="resultado2"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    Creado por Cabo 2º (MET.) Francisco Salas Muñoz
+  </footer>
+
+</div>
+
+<script>
+// Cambiar pestañas
+function openTab(tabId) {
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.querySelector(`[onclick="openTab('${tabId}')"]`).classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// Presión de vapor saturante Magnus
+function e_s(T) {
+  return 6.1094 * Math.exp((17.625 * T) / (T + 243.04));
+}
+
+// --- Pestaña 1 ---
+function calcularHR() {
+  const T = parseFloat(document.getElementById('T1').value);
+  const Tw = parseFloat(document.getElementById('Tw1').value);
+  const P = parseFloat(document.getElementById('P1').value);
+  const A = 0.00066;
+
+  const es = e_s(T);
+  const ew = e_s(Tw);
+
+  const HR = ((ew - A * P * (T - Tw)) / es) * 100;
+  const HR_entero = Math.round(HR);
+
+  const ln_e = Math.log(HR / 100 * es / 6.1094);
+  const Td = (243.04 * ln_e) / (17.625 - ln_e);
+
+  document.getElementById('resultado1').innerHTML = `
+    <strong>Humedad Relativa:</strong> ${HR_entero}%<br>
+    <strong>Punto de Rocío:</strong> ${Td.toFixed(1)} °C
+  `;
+}
+
+// --- Pestaña 2 ---
+function calcularTwHR() {
+  const T = parseFloat(document.getElementById('T2').value);
+  const Td = parseFloat(document.getElementById('Td2').value);
+  const P = parseFloat(document.getElementById('P2').value);
+  const A = 0.00066;
+
+  const es = e_s(T);
+  const e_actual = e_s(Td);
+
+  let Tw = Td;
+  let tol = 0.0001;
+  let diff = 1;
+  let iter = 0;
+  while(Math.abs(diff) > tol && iter < 100){
+    const ew = e_s(Tw);
+    const f = ew - A*P*(T - Tw) - e_actual;
+    const f_prime = (17.625*243.04/(243.04+Tw)**2) * ew + A*P;
+    diff = f / f_prime;
+    Tw = Tw - diff;
+    iter++;
+  }
+
+  const HR_final = ((e_s(Tw) - A*P*(T - Tw)) / es) * 100;
+  const HR_entero = Math.round(HR_final);
+
+  document.getElementById('resultado2').innerHTML = `
+    <strong>Temperatura Húmeda (Tw):</strong> ${Tw.toFixed(1)} °C<br>
+    <strong>Humedad Relativa (HR):</strong> ${HR_entero} %
+  `;
+}
+</script>
+
+</body>
+</html>
