@@ -8,7 +8,7 @@
 <style>
 body {
   font-family: 'Inter', sans-serif;
-  background: #1b2a38; /* fondo oscuro */
+  background: #1b2a38; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +17,7 @@ body {
   color: #f0f0f0;
 }
 .container {
-  background: #a0c4d9; /* contenedor más claro */
+  background: #a0c4d9; 
   padding: 35px 40px;
   border-radius: 25px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
@@ -124,6 +124,49 @@ footer {
   font-weight: 500;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
+
+/* Calculadora Flotante */
+.calc-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000; }
+.calc-container { padding: 20px; border-radius: 12px; width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); background: #a0c4d9; color:#1b2a38; }
+.calc-display { text-align: right; font-family: monospace; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size:2rem; background:#1b2a38;color:#f0f0f0; }
+.calc-history { font-family: monospace; background:#f0f0f0; color:#1b2a38; font-size:0.9rem; padding:5px 10px; border-radius:6px; margin-bottom:5px; overflow-x:auto; white-space:nowrap; }
+.calc-buttons { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+
+/* Botones internos con tonos masculinos */
+.calc-buttons button { 
+  padding: 15px; 
+  font-size: 1.2rem; 
+  border: none; 
+  border-radius: 8px; 
+  background: #1b75d1; /* Azul principal */ 
+  color: white; 
+  cursor: pointer; 
+  transition: all 0.2s ease;
+}
+.calc-buttons button:hover { 
+  background: #4ab3f4; /* Azul claro en hover */ 
+}
+.calc-buttons .equal { 
+  background: #0d3b66; /* Azul intenso para '=' */ 
+}
+.calc-buttons .clear { 
+  background: #e74c3c; /* rojo para 'C' */ 
+}
+
+/* Botón flotante modificado a azul masculino */
+.floating-btn.calc-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: #1b75d1; /* Azul masculino */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -172,65 +215,129 @@ footer {
   </footer>
 </div>
 
+<!-- Calculadora Flotante -->
+<div class="floating-btn calc-btn" onclick="toggleCalc()">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="28" height="28">
+    <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 2h2v2H8V6zm4 0h2v2h-2V6zm-4 4h2v2H8v-2zm4 0h2v2h-2v-2zm-4 4h2v2H8v-2zm4 0h2v2h-2v-2z"/>
+  </svg>
+</div>
+
+<div class="calc-modal" id="calcModal">
+  <div class="calc-container">
+    <div id="calc-history" class="calc-history">&nbsp;</div>
+    <div id="calc-display" class="calc-display">0</div>
+    <div class="calc-buttons">
+      <button class="clear" onclick="clearCalc()">C</button>
+      <button onclick="appendCalc('/')">÷</button>
+      <button onclick="appendCalc('*')">×</button>
+      <button onclick="appendCalc('-')">−</button>
+      <button onclick="appendCalc('7')">7</button>
+      <button onclick="appendCalc('8')">8</button>
+      <button onclick="appendCalc('9')">9</button>
+      <button onclick="appendCalc('+')">+</button>
+      <button onclick="appendCalc('4')">4</button>
+      <button onclick="appendCalc('5')">5</button>
+      <button onclick="appendCalc('6')">6</button>
+      <button onclick="appendCalc('.')">.</button>
+      <button onclick="appendCalc('1')">1</button>
+      <button onclick="appendCalc('2')">2</button>
+      <button onclick="appendCalc('3')">3</button>
+      <button class="equal" onclick="calculate()">=</button>
+      <button onclick="appendCalc('0')" style="grid-column: span 2;">0</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// Tabs
 function openTab(tabId) {
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelector(`[onclick="openTab('${tabId}')"]`).classList.add('active');
   document.getElementById(tabId).classList.add('active');
 }
-function e_s(T) {
-  return 6.1094 * Math.exp((17.625 * T) / (T + 243.04));
-}
+
+// Psicrometría
+function e_s(T) { return 6.1094 * Math.exp((17.625 * T) / (T + 243.04)); }
 function calcularHR() {
-  const T = parseFloat(document.getElementById('T1').value);
-  const Tw = parseFloat(document.getElementById('Tw1').value);
-  const P = parseFloat(document.getElementById('P1').value);
-  const A = 0.00066;
-
-  const es = e_s(T);
-  const ew = e_s(Tw);
-
-  const HR = ((ew - A * P * (T - Tw)) / es) * 100;
-  const HR_entero = Math.round(HR);
-
-  const ln_e = Math.log(HR / 100 * es / 6.1094);
-  const Td = (243.04 * ln_e) / (17.625 - ln_e);
-
-  document.getElementById('resultado1').innerHTML = `
-    <strong>Humedad Relativa:</strong> ${HR_entero}%<br>
-    <strong>Punto de Rocío:</strong> ${Td.toFixed(1)} °C
-  `;
+  const T=parseFloat(document.getElementById('T1').value);
+  const Tw=parseFloat(document.getElementById('Tw1').value);
+  const P=parseFloat(document.getElementById('P1').value);
+  const A=0.00066;
+  const es=e_s(T);
+  const ew=e_s(Tw);
+  const HR=((ew-A*P*(T-Tw))/es)*100;
+  const HR_entero=Math.round(HR);
+  const ln_e=Math.log(HR/100*es/6.1094);
+  const Td=(243.04*ln_e)/(17.625-ln_e);
+  document.getElementById('resultado1').innerHTML=`<strong>Humedad Relativa:</strong> ${HR_entero}%<br><strong>Punto de Rocío:</strong> ${Td.toFixed(1)} °C`;
 }
 function calcularTwHR() {
-  const T = parseFloat(document.getElementById('T2').value);
-  const Td = parseFloat(document.getElementById('Td2').value);
-  const P = parseFloat(document.getElementById('P2').value);
-  const A = 0.00066;
-
-  const es = e_s(T);
-  const e_actual = e_s(Td);
-
-  let Tw = Td;
-  let tol = 0.0001;
-  let diff = 1;
-  let iter = 0;
-  while(Math.abs(diff) > tol && iter < 100){
-    const ew = e_s(Tw);
-    const f = ew - A*P*(T - Tw) - e_actual;
-    const f_prime = (17.625*243.04/(243.04+Tw)**2) * ew + A*P;
-    diff = f / f_prime;
-    Tw = Tw - diff;
-    iter++;
+  const T=parseFloat(document.getElementById('T2').value);
+  const Td=parseFloat(document.getElementById('Td2').value);
+  const P=parseFloat(document.getElementById('P2').value);
+  const A=0.00066;
+  const es=e_s(T);
+  const e_actual=e_s(Td);
+  let Tw=Td, tol=0.0001, diff=1, iter=0;
+  while(Math.abs(diff)>tol && iter<100){
+    const ew=e_s(Tw);
+    const f=ew-A*P*(T-Tw)-e_actual;
+    const f_prime=(17.625*243.04/(243.04+Tw)**2)*ew+A*P;
+    diff=f/f_prime; Tw=Tw-diff; iter++;
   }
-  const HR_final = ((e_s(Tw) - A*P*(T - Tw)) / es) * 100;
-  const HR_entero = Math.round(HR_final);
-
-  document.getElementById('resultado2').innerHTML = `
-    <strong>Temperatura Húmeda (Tw):</strong> ${Tw.toFixed(1)} °C<br>
-    <strong>Humedad Relativa (HR):</strong> ${HR_entero} %
-  `;
+  const HR_final=((e_s(Tw)-A*P*(T-Tw))/es)*100;
+  const HR_entero=Math.round(HR_final);
+  document.getElementById('resultado2').innerHTML=`<strong>Temperatura Húmeda (Tw):</strong> ${Tw.toFixed(1)} °C<br><strong>Humedad Relativa (HR):</strong> ${HR_entero} %`;
 }
+
+// Calculadora Flotante
+let calcExpression = "";
+let calcFullHistory = []; // Historial completo
+
+function toggleCalc() {
+  const modal = document.getElementById("calcModal");
+  modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
+}
+
+function appendCalc(value) {
+  if (calcExpression === "0") calcExpression = "";
+  calcExpression += value;
+  document.getElementById("calc-display").textContent = calcExpression;
+}
+
+function clearCalc() {
+  calcExpression = "";
+  document.getElementById("calc-display").textContent = "0";
+}
+
+function calculate() {
+  try {
+    let result = eval(calcExpression);
+    result = Math.round(result * 100) / 100;
+    calcFullHistory.push(`${calcExpression} = ${result}`);
+    document.getElementById("calc-history").innerHTML = calcFullHistory.join("<br>");
+    document.getElementById("calc-display").textContent = result;
+    calcExpression = result.toString();
+  } catch {
+    document.getElementById("calc-display").textContent = "Error";
+    calcExpression = "";
+  }
+}
+
+document.addEventListener("keydown", function(event) {
+  const modal = document.getElementById("calcModal");
+  if(modal.style.display !== "flex") return;
+  const key = event.key;
+  if(!isNaN(key) || "+-*/.".includes(key)) appendCalc(key);
+  else if(key === "Enter" || key === "="){ event.preventDefault(); calculate(); }
+  else if(key === "Backspace") { calcExpression = calcExpression.slice(0,-1) || "0"; document.getElementById("calc-display").textContent = calcExpression; }
+  else if(key === "Escape") clearCalc();
+});
+
+document.getElementById("calcModal").addEventListener("click", function(e) {
+  if(e.target.id === "calcModal") toggleCalc();
+});
 </script>
 
 </body>
