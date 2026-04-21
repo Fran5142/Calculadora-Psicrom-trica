@@ -153,7 +153,8 @@
   .result-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 8px; }
   .result-value { font-size: 2.2rem; font-weight: 700; color: #fff; }
 
-footer { margin-top: 40px; text-align: center; font-size: 1.0rem; color: rgba(255,255,255,0.8); font-weight: 500; }
+  /* Ajuste para acomodar el contador en el footer */
+  footer { margin-top: 40px; text-align: center; font-size: 1.0rem; color: rgba(255,255,255,0.8); font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 15px; }
 
   /* --- CALCULADORA --- */
   .floating-btn {
@@ -254,7 +255,10 @@ footer { margin-top: 40px; text-align: center; font-size: 1.0rem; color: rgba(25
     </div>
   </div>
 
-  <footer>Cabo 1º (MET.) Francisco Salas Muñoz</footer>
+  <footer>
+    <span>Cabo 1º (MET.) Francisco Salas Muñoz</span>
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://fran5142.github.io/Calculadora-Psicrom-trica/&count_bg=%2338BDF8&title_bg=%230F172A&icon=&icon_color=%23E7E7E7&title=VISITAS&edge_flat=true" alt="Contador de Visitas" style="border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+  </footer>
 </div>
 
 <div class="floating-btn" onclick="toggleCalc()">
