@@ -3,343 +3,365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora Psicrométrica Masculina Invertida</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<title>Calculadora Psicrométrica | Profesional V3.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: 'Inter', sans-serif;
-  background: #1b2a38; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  color: #f0f0f0;
-}
-.container {
-  background: #a0c4d9; 
-  padding: 35px 40px;
-  border-radius: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-  max-width: 500px;
-  width: 100%;
-  transition: all 0.3s ease;
-  color: #1b2a38;
-  text-align: center;
-}
-.container img {
-  max-width: 170px;
-  margin-bottom: 20px;
-}
-h2 {
-  color: #1b2a38;
-  margin-bottom: 30px;
-  font-weight: 700;
-}
-input[type="number"] {
-  width: 100%;
-  padding: 14px 18px;
-  margin: 10px 0 20px 0;
-  border-radius: 12px;
-  border: 1px solid #1b2a38;
-  font-size: 16px;
-  background: #f0f0f0;
-  color: #1b2a38;
-  transition: all 0.3s ease;
-}
-input[type="number"]:focus {
-  outline: none;
-  box-shadow: 0 0 12px #4ab3f4;
-}
-button {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(90deg, #1b75d1, #4ab3f4);
-  color: #fff;
-  border: none;
-  border-radius: 15px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(26,115,209,0.4);
-}
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(26,115,209,0.6);
-}
-.result {
-  margin-top: 25px;
-  padding: 18px;
-  border-radius: 15px;
-  background: #1b2a38;
-  text-align: center;
-  font-weight: 500;
-  color: #f0f0f0;
-  box-shadow: inset 0 0 10px rgba(74,179,244,0.2);
-}
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-.tab {
-  flex: 1;
-  text-align: center;
-  padding: 14px 0;
-  cursor: pointer;
-  background: #f0f0f0;
-  color: #1b2a38;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-.tab.active {
-  background: linear-gradient(90deg, #1b75d1, #4ab3f4);
-  color: #fff;
-  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
-}
-.tab-content {
-  display: none;
-  animation: fadeIn 0.4s ease;
-}
-.tab-content.active {
-  display: block;
-}
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(15px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-label {
-  font-weight: 600;
-  color: #1b2a38;
-}
-footer {
-  margin-top: 30px;
-  text-align: center;
-  font-size: 14px;
-  color: #1b2a38;
-  font-weight: 500;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Calculadora Flotante */
-.calc-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000; }
-.calc-container { padding: 20px; border-radius: 12px; width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); background: #a0c4d9; color:#1b2a38; }
-.calc-display { text-align: right; font-family: monospace; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size:2rem; background:#1b2a38;color:#f0f0f0; }
-.calc-history { font-family: monospace; background:#f0f0f0; color:#1b2a38; font-size:0.9rem; padding:5px 10px; border-radius:6px; margin-bottom:5px; overflow-x:auto; white-space:nowrap; }
-.calc-buttons { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  /* Eliminar flechas de subir/bajar en inputs numéricos */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
 
-/* Botones internos con tonos masculinos */
-.calc-buttons button { 
-  padding: 15px; 
-  font-size: 1.2rem; 
-  border: none; 
-  border-radius: 8px; 
-  background: #1b75d1; /* Azul principal */ 
-  color: white; 
-  cursor: pointer; 
-  transition: all 0.2s ease;
-}
-.calc-buttons button:hover { 
-  background: #4ab3f4; /* Azul claro en hover */ 
-}
-.calc-buttons .equal { 
-  background: #0d3b66; /* Azul intenso para '=' */ 
-}
-.calc-buttons .clear { 
-  background: #e74c3c; /* rojo para 'C' */ 
-}
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(45deg, #0f172a, #1e3a8a, #0891b2, #0f172a);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    padding: 20px;
+  }
 
-/* Botón flotante modificado a azul masculino */
-.floating-btn.calc-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  background: #1b75d1; /* Azul masculino */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .app-container {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 35px;
+    padding: 45px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+
+  .header { text-align: center; margin-bottom: 35px; }
+  
+  /* Logo más grande */
+  .header img {
+    height: 200px; /* Aumentado de 80px */
+    width: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.4));
+  }
+
+  h2 { font-weight: 700; font-size: 2rem; letter-spacing: -0.5px; margin-bottom: 8px; }
+  p.subtitle { color: rgba(255,255,255,0.6); font-weight: 300; font-size: 1rem; }
+
+  .toggle-container {
+    display: flex;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 6px;
+    margin-bottom: 35px;
+  }
+
+  .toggle-btn {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    transition: all 0.3s ease;
+  }
+
+  .toggle-btn.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .input-wrapper {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 15px 25px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .input-wrapper label { font-size: 1rem; color: rgba(255,255,255,0.8); }
+  
+  .input-wrapper input {
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    text-align: right;
+    width: 120px;
+    outline: none;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 18px;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .action-btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+  .result-card {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .result-item {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 22px;
+    padding: 25px 15px;
+    text-align: center;
+  }
+
+  .result-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 8px; }
+  .result-value { font-size: 2.2rem; font-weight: 700; color: #fff; }
+
+footer { margin-top: 40px; text-align: center; font-size: 1.0rem; color: rgba(255,255,255,0.8); font-weight: 500; }
+
+  /* --- CALCULADORA --- */
+  .floating-btn {
+    position: fixed; bottom: 40px; right: 40px;
+    width: 70px; height: 70px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 1000;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  }
+
+  .calc-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+    justify-content: center; align-items: center; z-index: 2000;
+  }
+
+  .calc-container {
+    background: rgba(15, 20, 35, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px; border-radius: 35px; width: 340px;
+  }
+
+  .calc-display {
+    text-align: right; font-size: 2.8rem; font-weight: 300;
+    padding: 10px 10px 30px; color: #fff; min-height: 80px;
+  }
+
+  .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+
+  .calc-buttons button {
+    height: 65px; border: none; border-radius: 50%;
+    font-size: 1.4rem; font-family: 'Outfit', sans-serif;
+    background: rgba(255, 255, 255, 0.05); color: #fff;
+    cursor: pointer; transition: 0.2s;
+  }
+
+  .calc-buttons button:hover { background: rgba(255, 255, 255, 0.15); }
+  .calc-buttons .op { color: #38bdf8; }
+  .calc-buttons .clear { color: #f43f5e; }
+  .calc-buttons .equal { background: #38bdf8; color: #000; font-weight: 700; }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <img src="https://archive.org/download/imagen_mejorada_3D/LOGO%20METEOPMO.png">
-  <h2>Calculadora Psicrométrica</h2>
+<div class="app-container">
+  <div class="header">
+    <img src="https://archive.org/download/imagen_mejorada_3D/LOGO%20METEOPMO.png" alt="Logo MeteoPMO">
+    <h2>Psicrometría</h2>
+    <p class="subtitle">Estación de Precisión</p>
+  </div>
 
-  <div class="tabs">
-    <div class="tab active" onclick="openTab('tab1')">Tº y Tw → HR/Td</div>
-    <div class="tab" onclick="openTab('tab2')">Tº y Td → Tw/HR</div>
+  <div class="toggle-container">
+    <div class="toggle-btn active" onclick="openTab('tab1', this)">Tº Seca + Tº Húmeda</div>
+    <div class="toggle-btn" onclick="openTab('tab2', this)">Tº Seca + Tº Punto de Rocío</div>
   </div>
 
   <div id="tab1" class="tab-content active">
-    <label>Temperatura seca (T °C)</label>
-    <input type="number" id="T1" step="0.1" value="15.2">
-    
-    <label>Temperatura húmeda (Tw °C)</label>
-    <input type="number" id="Tw1" step="0.1" value="11.0">
-    
-    <label>Presión atmosférica (P hPa)</label>
-    <input type="number" id="P1" step="1" value="1013">
-    
-    <button onclick="calcularHR()">Calcular HR y Punto de Rocío</button>
-    
-    <div class="result" id="resultado1"></div>
+    <div class="input-wrapper">
+      <label>Temp. Seca (°C)</label>
+      <input type="number" id="T1" step="0.1" value="15.2">
+    </div>
+    <div class="input-wrapper">
+      <label>Temp. Húmeda (°C)</label>
+      <input type="number" id="Tw1" step="0.1" value="11.0">
+    </div>
+    <div class="input-wrapper">
+      <label>Presión (hPa)</label>
+      <input type="number" id="P1" step="1" value="1013">
+    </div>
+    <button class="action-btn" onclick="calcularHR()">Calcular Resultados</button>
+    <div class="result-card" id="resultado1" style="display:none;">
+      <div class="result-item"><div class="result-label">Humedad Relativa</div><div class="result-value" id="val-hr1">--</div></div>
+      <div class="result-item"><div class="result-label">Punto de Rocío</div><div class="result-value" id="val-td1">--</div></div>
+    </div>
   </div>
 
   <div id="tab2" class="tab-content">
-    <label>Temperatura seca (T °C)</label>
-    <input type="number" id="T2" step="0.1" value="15.2">
-    
-    <label>Punto de rocío (Td °C)</label>
-    <input type="number" id="Td2" step="0.1" value="7.4">
-    
-    <label>Presión atmosférica (P hPa)</label>
-    <input type="number" id="P2" step="1" value="1013">
-    
-    <button onclick="calcularTwHR()">Calcular Temperatura Húmeda y Humedad Relativa</button>
-    
-    <div class="result" id="resultado2"></div>
+    <div class="input-wrapper">
+      <label>Temp. Seca (°C)</label>
+      <input type="number" id="T2" step="0.1" value="15.2">
+    </div>
+    <div class="input-wrapper">
+      <label>Punto Rocío (°C)</label>
+      <input type="number" id="Td2" step="0.1" value="7.4">
+    </div>
+    <div class="input-wrapper">
+      <label>Presión (hPa)</label>
+      <input type="number" id="P2" step="1" value="1013">
+    </div>
+    <button class="action-btn" onclick="calcularTwHR()">Calcular Resultados</button>
+    <div class="result-card" id="resultado2" style="display:none;">
+      <div class="result-item"><div class="result-label">Temp. Húmeda</div><div class="result-value" id="val-tw2">--</div></div>
+      <div class="result-item"><div class="result-label">Humedad</div><div class="result-value" id="val-hr2">--</div></div>
+    </div>
   </div>
 
-  <footer>
-    Creado por Cabo 2º (MET.) Francisco Salas Muñoz. Fecha: 18/08/2025
-  </footer>
+  <footer>Cabo 1º (MET.) Francisco Salas Muñoz</footer>
 </div>
 
-<!-- Calculadora Flotante -->
-<div class="floating-btn calc-btn" onclick="toggleCalc()">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="28" height="28">
-    <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 2h2v2H8V6zm4 0h2v2h-2V6zm-4 4h2v2H8v-2zm4 0h2v2h-2v-2zm-4 4h2v2H8v-2zm4 0h2v2h-2v-2z"/>
+<div class="floating-btn" onclick="toggleCalc()">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+    <line x1="8" y1="6" x2="16" y2="6"></line>
+    <circle cx="9" cy="11" r="1"></circle><circle cx="15" cy="11" r="1"></circle>
+    <circle cx="9" cy="15" r="1"></circle><circle cx="15" cy="15" r="1"></circle>
+    <circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="19" r="1"></circle>
   </svg>
 </div>
 
 <div class="calc-modal" id="calcModal">
   <div class="calc-container">
-    <div id="calc-history" class="calc-history">&nbsp;</div>
     <div id="calc-display" class="calc-display">0</div>
     <div class="calc-buttons">
       <button class="clear" onclick="clearCalc()">C</button>
-      <button onclick="appendCalc('/')">÷</button>
-      <button onclick="appendCalc('*')">×</button>
-      <button onclick="appendCalc('-')">−</button>
-      <button onclick="appendCalc('7')">7</button>
-      <button onclick="appendCalc('8')">8</button>
-      <button onclick="appendCalc('9')">9</button>
-      <button onclick="appendCalc('+')">+</button>
-      <button onclick="appendCalc('4')">4</button>
-      <button onclick="appendCalc('5')">5</button>
-      <button onclick="appendCalc('6')">6</button>
-      <button onclick="appendCalc('.')">.</button>
-      <button onclick="appendCalc('1')">1</button>
-      <button onclick="appendCalc('2')">2</button>
-      <button onclick="appendCalc('3')">3</button>
-      <button class="equal" onclick="calculate()">=</button>
-      <button onclick="appendCalc('0')" style="grid-column: span 2;">0</button>
+      <button class="op" onclick="appendCalc('/')">÷</button>
+      <button class="op" onclick="appendCalc('*')">×</button>
+      <button class="op" onclick="appendCalc('-')">−</button>
+      <button onclick="appendCalc('7')">7</button><button onclick="appendCalc('8')">8</button><button onclick="appendCalc('9')">9</button>
+      <button class="op" onclick="appendCalc('+')">+</button>
+      <button onclick="appendCalc('4')">4</button><button onclick="appendCalc('5')">5</button><button onclick="appendCalc('6')">6</button>
+      <button class="equal" onclick="calculate()" style="grid-row: span 2; border-radius: 30px;">=</button>
+      <button onclick="appendCalc('1')">1</button><button onclick="appendCalc('2')">2</button><button onclick="appendCalc('3')">3</button>
+      <button onclick="appendCalc('0')" style="grid-column: span 2; border-radius: 30px;">0</button><button onclick="appendCalc('.')">.</button>
     </div>
   </div>
 </div>
 
 <script>
-// Tabs
-function openTab(tabId) {
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+function openTab(tabId, element) {
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-  document.querySelector(`[onclick="openTab('${tabId}')"]`).classList.add('active');
+  document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
+  element.classList.add('active');
 }
 
-// Psicrometría
 function e_s(T) { return 6.1094 * Math.exp((17.625 * T) / (T + 243.04)); }
+
 function calcularHR() {
-  const T=parseFloat(document.getElementById('T1').value);
-  const Tw=parseFloat(document.getElementById('Tw1').value);
-  const P=parseFloat(document.getElementById('P1').value);
-  const A=0.00066;
-  const es=e_s(T);
-  const ew=e_s(Tw);
-  const HR=((ew-A*P*(T-Tw))/es)*100;
-  const HR_entero=Math.round(HR);
-  const ln_e=Math.log(HR/100*es/6.1094);
-  const Td=(243.04*ln_e)/(17.625-ln_e);
-  document.getElementById('resultado1').innerHTML=`<strong>Humedad Relativa:</strong> ${HR_entero}%<br><strong>Punto de Rocío:</strong> ${Td.toFixed(1)} °C`;
+  const T = parseFloat(document.getElementById('T1').value);
+  const Tw = parseFloat(document.getElementById('Tw1').value);
+  const P = parseFloat(document.getElementById('P1').value);
+  const es = e_s(T), ew = e_s(Tw);
+  const HR = Math.max(0, Math.min(100, ((ew - 0.00066 * P * (T - Tw)) / es) * 100));
+  const ln_e = Math.log(HR / 100 * es / 6.1094);
+  const Td = (243.04 * ln_e) / (17.625 - ln_e);
+  document.getElementById('resultado1').style.display = 'grid';
+  document.getElementById('val-hr1').innerText = Math.round(HR) + '%';
+  document.getElementById('val-td1').innerText = Td.toFixed(1) + '°';
 }
+
 function calcularTwHR() {
-  const T=parseFloat(document.getElementById('T2').value);
-  const Td=parseFloat(document.getElementById('Td2').value);
-  const P=parseFloat(document.getElementById('P2').value);
-  const A=0.00066;
-  const es=e_s(T);
-  const e_actual=e_s(Td);
-  let Tw=Td, tol=0.0001, diff=1, iter=0;
-  while(Math.abs(diff)>tol && iter<100){
-    const ew=e_s(Tw);
-    const f=ew-A*P*(T-Tw)-e_actual;
-    const f_prime=(17.625*243.04/(243.04+Tw)**2)*ew+A*P;
-    diff=f/f_prime; Tw=Tw-diff; iter++;
+  const T = parseFloat(document.getElementById('T2').value), Td = parseFloat(document.getElementById('Td2').value), P = parseFloat(document.getElementById('P2').value);
+  const es = e_s(T), e_actual = e_s(Td);
+  let Tw = Td, diff = 1;
+  for(let i=0; i<50 && Math.abs(diff)>0.0001; i++){
+    let ew = e_s(Tw);
+    let f = ew - 0.00066 * P * (T - Tw) - e_actual;
+    let f_p = (17.625 * 243.04 / (243.04 + Tw)**2) * ew + 0.00066 * P;
+    diff = f/f_p; Tw -= diff;
   }
-  const HR_final=((e_s(Tw)-A*P*(T-Tw))/es)*100;
-  const HR_entero=Math.round(HR_final);
-  document.getElementById('resultado2').innerHTML=`<strong>Temperatura Húmeda (Tw):</strong> ${Tw.toFixed(1)} °C<br><strong>Humedad Relativa (HR):</strong> ${HR_entero} %`;
+  const HR = Math.max(0, Math.min(100, (e_actual/es)*100));
+  document.getElementById('resultado2').style.display = 'grid';
+  document.getElementById('val-tw2').innerText = Tw.toFixed(1) + '°';
+  document.getElementById('val-hr2').innerText = Math.round(HR) + '%';
 }
 
-// Calculadora Flotante
-let calcExpression = "";
-let calcFullHistory = []; // Historial completo
-
+/* --- LOGICA CALCULADORA --- */
+let calcExp = "";
 function toggleCalc() {
   const modal = document.getElementById("calcModal");
   modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
 }
-
-function appendCalc(value) {
-  if (calcExpression === "0") calcExpression = "";
-  calcExpression += value;
-  document.getElementById("calc-display").textContent = calcExpression;
+function appendCalc(v) {
+  if(calcExp === "0" && v !== ".") calcExp = "";
+  calcExp += v;
+  document.getElementById("calc-display").innerText = calcExp;
 }
-
-function clearCalc() {
-  calcExpression = "";
-  document.getElementById("calc-display").textContent = "0";
-}
-
+function clearCalc() { calcExp = ""; document.getElementById("calc-display").innerText = "0"; }
 function calculate() {
   try {
-    let result = eval(calcExpression);
-    result = Math.round(result * 100) / 100;
-    calcFullHistory.push(`${calcExpression} = ${result}`);
-    document.getElementById("calc-history").innerHTML = calcFullHistory.join("<br>");
-    document.getElementById("calc-display").textContent = result;
-    calcExpression = result.toString();
-  } catch {
-    document.getElementById("calc-display").textContent = "Error";
-    calcExpression = "";
-  }
+    let res = eval(calcExp.replace('×', '*').replace('÷', '/'));
+    res = Math.round(res * 1000) / 1000;
+    document.getElementById("calc-display").innerText = res;
+    calcExp = res.toString();
+  } catch { document.getElementById("calc-display").innerText = "Err"; calcExp = ""; }
 }
 
-document.addEventListener("keydown", function(event) {
+// FIX: Teclado de PC para Calculadora
+document.addEventListener("keydown", function(e) {
   const modal = document.getElementById("calcModal");
-  if(modal.style.display !== "flex") return;
-  const key = event.key;
-  if(!isNaN(key) || "+-*/.".includes(key)) appendCalc(key);
-  else if(key === "Enter" || key === "="){ event.preventDefault(); calculate(); }
-  else if(key === "Backspace") { calcExpression = calcExpression.slice(0,-1) || "0"; document.getElementById("calc-display").textContent = calcExpression; }
-  else if(key === "Escape") clearCalc();
+  if (modal.style.display !== "flex") return;
+
+  if (e.key >= "0" && e.key <= "9") appendCalc(e.key);
+  if (["+", "-", "*", "/"].includes(e.key)) appendCalc(e.key);
+  if (e.key === ".") appendCalc(".");
+  if (e.key === "Enter") { e.preventDefault(); calculate(); }
+  if (e.key === "Backspace") {
+    calcExp = calcExp.slice(0, -1);
+    document.getElementById("calc-display").innerText = calcExp || "0";
+  }
+  if (e.key === "Escape") toggleCalc();
 });
 
-document.getElementById("calcModal").addEventListener("click", function(e) {
-  if(e.target.id === "calcModal") toggleCalc();
-});
+document.getElementById("calcModal").addEventListener("click", e => { if(e.target.id === "calcModal") toggleCalc(); });
 </script>
-
 </body>
 </html>
-
